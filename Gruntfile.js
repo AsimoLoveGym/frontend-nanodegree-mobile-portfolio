@@ -40,11 +40,32 @@ module.exports = function(grunt) {
           dest: 'dist/'                // Destination path prefix
         }]
       }
+    },
+    // uglify: {
+    //   my_target: {
+    //     files: {
+    //       'dest/output.min.js': ['src/input1.js', 'src/input2.js']
+    //     }
+    //   }
+    // }
+
+     cssmin: {
+       target: {
+         files: [{
+          expand: true,
+          cwd: 'css/',
+          src: ['*.css', '!*.min.css'],
+          dest: 'release/css',
+          ext: '.min.css'
+        }]
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-responsive-images');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
-  grunt.registerTask('default', ["imagemin"]);
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.registerTask('default', ["cssmin"]);
 
 };
