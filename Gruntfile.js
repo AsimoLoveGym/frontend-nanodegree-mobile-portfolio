@@ -24,10 +24,27 @@ module.exports = function(grunt) {
           dest: 'dist/'
         }]
       }
+    },
+    imagemin: {                          // Task
+        options: {
+          progressive: true,                       // Target options
+          optimizationLevel: 7
+
+        },
+
+        dist: {                // Another target
+        files: [{
+          expand: true,                  // Enable dynamic expansion
+          cwd: 'src/',                   // Src matches are relative to this path
+          src: ['**/*.{png,jpg,gif}'],   // Actual patterns to match
+          dest: 'dist/'                // Destination path prefix
+        }]
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-responsive-images');
-  grunt.registerTask('default', ["responsive_images"]);
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.registerTask('default', ["imagemin"]);
 
 };
