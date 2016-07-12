@@ -525,13 +525,18 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
+  // cache the document.body.scrollTop outside of for loop, it saves a lot of work.
   var verticalDist = document.body.scrollTop;
   // querySelectorAll is selector with low efficiency comparing to DOM-querying
   // It's because querySelectorAll search a wider range.
   // var items = document.querySelectorAll('.mover');
-  var items = document.getElementsByClassName('.mover');
-  for (var i = 0; i < items.length; i++) {
+  var items = document.getElementsByClassName('mover');
+  // cached the array out of function.
+  var cachedLength = items.length;
+  for (var i = 0; i < cachedLength; i++) {
     var phase = Math.sin((verticalDist / 1250) + (i % 5));
+    // console.log for checking the phase value
+    // console.log(phase);
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
