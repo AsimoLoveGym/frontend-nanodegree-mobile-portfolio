@@ -525,6 +525,7 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
+// -------------------
   // cache the document.body.scrollTop outside of for loop, it saves a lot of work.
   // in the loop, it will query document -- body -- scrollTop a lot of times.
   // last 10 frames time decreased from ~40 ms to ~1ms.
@@ -541,7 +542,8 @@ function updatePositions() {
   var i;
   var constantArray = [];
   for (i=0; i < 5; i++){
-    constantArray = Math.sin((verticalDist / 1250) + (i % 5));
+    // debugged, should be constantArray[i] instead of constantArray
+    constantArray[i] = Math.sin((verticalDist / 1250) + (i % 5));
   }
 
   var cachedLength = items.length;
@@ -549,12 +551,32 @@ function updatePositions() {
     var phase = constantArray[i%5];
     // console.log for checking the phase value
     // console.log(phase);
-    // var translateXDist = items[i].basicLeft + 100 * phase + 'px';
-    // console.log(translateXDist);
-    // items[i].style.transform = 'translateX(translateXDist)';
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    var translateXDist = items[i].basicLeft + 100 * phase - 1250;
+    // console.log(typeof translateXDist);
+    //  items[i].style.transform = "translateX(‘translateXDist’px)";
+    items[i].style.transform = 'translate3d(' + translateXDist + 'px, 0, 0)'
+    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
     // console.log(items[i].style.left);
-  }
+   }
+// -------------------
+
+// Debug, credit to vascode https://github.com/vascode/FEND-P4-mobile-portfolio/blob/master/views/js/main.js
+  // var items = document.getElementsByClassName('mover');
+  // var top = document.body.scrollTop/ 1250;
+  // var numOfPizzas = items.length;
+  //
+  // var constArray = [];
+  // for (var i=0; i<5; i++){
+  //   constArray[i] = Math.sin(top + i) * 100; //correspond to 100 * phase in previoius code
+  // }
+  //
+  // for (var i = 0; i < numOfPizzas ; i++) {
+  //
+  //   var moveX =  items[i].basicLeft + constArray[(i % 5)] -1250;
+  //   // items[i].style.transform = 'translate3d(' + moveX + 'px, 0, 0)';
+  //   items[i].style.transform = 'translateX( ' + moveX + 'px)';
+  // }
+// -------------------
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
