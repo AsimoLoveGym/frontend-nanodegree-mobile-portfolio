@@ -526,18 +526,34 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
   // cache the document.body.scrollTop outside of for loop, it saves a lot of work.
+  // in the loop, it will query document -- body -- scrollTop a lot of times.
+  // last 10 frames time decreased from ~40 ms to ~1ms.
   var verticalDist = document.body.scrollTop;
   // querySelectorAll is selector with low efficiency comparing to DOM-querying
   // It's because querySelectorAll search a wider range.
   // var items = document.querySelectorAll('.mover');
   var items = document.getElementsByClassName('mover');
-  // cached the array out of function.
+  // Credit to Udacity mentor mcs: https://discussions.udacity.com/t/project-4-how-do-i-optimize-the-background-pizzas-for-loop/36302
+  // After check the value in previous for loop, we found the final output is always 5 constant value
+  // thorough the whole loop, it would be much more efficient to cache these 5 values
+  // out of the for-loop function.
+
+  var i;
+  var constantArray = [];
+  for (i=0; i < 5; i++){
+    constantArray = Math.sin((verticalDist / 1250) + (i % 5));
+  }
+
   var cachedLength = items.length;
-  for (var i = 0; i < cachedLength; i++) {
-    var phase = Math.sin((verticalDist / 1250) + (i % 5));
+  for (i = 0; i < cachedLength; i++) {
+    var phase = constantArray[i%5];
     // console.log for checking the phase value
     // console.log(phase);
+    // var translateXDist = items[i].basicLeft + 100 * phase + 'px';
+    // console.log(translateXDist);
+    // items[i].style.transform = 'translateX(translateXDist)';
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    // console.log(items[i].style.left);
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
