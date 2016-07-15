@@ -1,5 +1,6 @@
-console.log(window.innerHeight);
-console.log(window.innerWidth);
+// For number of pizzas check
+// console.log(window.innerHeight);
+// console.log(window.innerWidth);
 
 /*
 Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
@@ -559,11 +560,27 @@ function updatePositions() {
     var phase = constantArray[i%5];
     // console.log for checking the phase value
     // console.log(phase);
-    var translateXDist = items[i].basicLeft + 100 * phase - 1250;
+
+    var translateXDist = (i % cols) * s + 100 * phase - 1250;
+
+    // TODO try to find out why the 1250 hard code is necessary
+    // must be the difference b/w translateXDist and items[i].style.left
+    // console.log(translateXDist);
+    // console.log(items[i].basicLeft + 100 * phase);
+
+
+    // by checking the value of item[i].basicLeft value, found they are the same value as mover adding function
+    // DOM-querying is expensive, use math expression to replace.
+    // to do so, we neee the s and cols value to be global available.
+
+    // console the value with math expression & basicLeft, make sure it can be replaced.
+    //  console.log(items[i].basicLeft);
+    //  console.log((i % cols) * s);
     // console.log(typeof translateXDist);
     // translateX doesn't work, why
-    // items[i].style.transform = "translateX(‘translateXDist’+px)";
-     items[i].style.transform = 'translate3d(' + translateXDist + 'px, 0, 0)'
+    // Figure it out, either translateX or translate3D will work.
+    items[i].style.transform = 'translateX(' + translateXDist + 'px)';
+    // items[i].style.transform = 'translate3d(' + translateXDist + 'px, 0, 0)'
     // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
     // console.log(items[i].style.left);
    }
@@ -601,9 +618,14 @@ function updatePositions() {
 window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
+// For updatePositions work well, make the cols and s value global available.
+var cols = 8;
+var s = 256;
+
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
-  var s = 256;
+  // var cols = 8;
+  // var s = 256;
+
   // It seems document.querySelector("#movingPizzas1") is a constant value
   // Not necessary to put it in the for-loop
   var movingPizzas = document.querySelector("#movingPizzas1");
@@ -613,9 +635,12 @@ document.addEventListener('DOMContentLoaded', function() {
   //   basicLeft[i] = (i % cols) * s;
   // }
 
-  var numberOfPizzaRow = Math.floor(window.innerHeight / s) + 1;
+  // var numberOfPizzaCol = Math.ceil(window.innerWidth / s);
+  var numberOfPizzaRow = Math.ceil(window.innerHeight / s);
+  // var numberOfPizzas = numberOfPizzaRow * numberOfPizzaCol;
+  // cols = numberOfPizzaCol;
   var numberOfPizzas = numberOfPizzaRow * cols;
-  console.log(numberOfPizzaRow,numberOfPizzas);
+  // console.log(numberOfPizzaCol,numberOfPizzaRow,numberOfPizzas);
 
   for (i = 0; i < numberOfPizzas; i++) {
   // for (var i = 0; i < 32; i++) {
