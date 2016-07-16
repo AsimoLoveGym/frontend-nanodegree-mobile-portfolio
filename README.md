@@ -9,7 +9,11 @@
 5. async all the js files.
 6. Relocated the google fonts link to the bottom.
 
-PageSpeed Insights score: Mobile: 95, Desktop: 97
+PageSpeed Insights score: 
+  - **Mobile: 95**, 
+  - **Desktop: 97**
+
+[Check my PageSpeed score here](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fasimolovegym.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F)
 
 ####JavaScript Optimization. (60 FPS):
 1. function changePizzaSizes(size):
