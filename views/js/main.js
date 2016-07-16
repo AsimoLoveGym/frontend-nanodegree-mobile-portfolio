@@ -1,3 +1,16 @@
+//
+// Edacity Project: Website Optimization
+//
+// Author: Zhuangzhuang Xia ()
+// Date:    16th July 2016
+// Course:  Udacity Front-end Web Developer
+//
+//
+// Description: This project includes two part,
+//              I: PageSpeed Insights Score
+//              II: JavaScript optimization for views/js/main.js
+//
+
 /*
 Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
 jank-free at 60 frames per second.
@@ -17,6 +30,9 @@ cameron *at* udacity *dot* com
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
+
+'use strict';
+
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
   "Pepperoni",
@@ -405,13 +421,17 @@ var resizePizzas = function(size) {
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+      // getElementById() should be more efficient than querySelector
+        // document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        // document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        // document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -425,7 +445,9 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   // Use batch var randomPizza to avoid querry the document in for loop
   function changePizzaSizes(size) {
-    var randomPizza = document.querySelectorAll(".randomPizzaContainer");
+    // document.querySelectorAll is a low efficiency method, use getElementsByClassName.
+    // var randomPizza = document.querySelectorAll(".randomPizzaContainer");
+    var randomPizza = document.getElementsByClassName("randomPizzaContainer");
     // console.log(randomPizza.length);
     // Checked the value of determineDx returned, it seems the whole function is useless, the final
     // result of of newwidth is the same value sizeSwitcher(size) output, just use it will be enough.
@@ -444,8 +466,9 @@ var resizePizzas = function(size) {
     }
 
     var newSize = sizeSwitcher(size);
-
-    for (var i = 0; i < randomPizza.length; i++) {
+    // Avoid the querying occured in iterations.
+    var randomPizzasLen = randomPizza.length;
+    for (var i = 0; i < randomPizzasLen; i++) {
       randomPizza[i].style.width = newSize + "%";
     }
   }
@@ -561,15 +584,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // It seems document.querySelector("#movingPizzas1") is a constant value
   // Not necessary to put it in the for-loop
-  var movingPizzas = document.querySelector("#movingPizzas1");
+  // Also, avoid using querySelector
+  // var movingPizzas = document.querySelector("#movingPizzas1");
+  var movingPizzas = document.getElementById("movingPizzas1");
 
   // Depends on the window size, create the necessary background pizzas for animation
   // TODO: hoa about users resize the window? Need event listner.
   var numberOfPizzaRow = Math.ceil(window.innerHeight / s);
   var numberOfPizzas = numberOfPizzaRow * cols;
 
+  var elem;
+
   for (i = 0; i < numberOfPizzas; i++) {
-    var elem = document.createElement('img');
+    // From project review suggestion: Declaring the elem variable (var elem;) in the initialisation of the for-loop will prevent it from being created every time the loop is executed.
+    // var elem = document.createElement('img');
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
