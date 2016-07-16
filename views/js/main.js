@@ -1,14 +1,9 @@
-// For number of pizzas check
-// console.log(window.innerHeight);
-// console.log(window.innerWidth);
-
 /*
 Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
 jank-free at 60 frames per second.
 
 There are two major issues in this code that lead to sub-60fps performance. Can
 you spot and fix both?
-
 
 Built into the code, you'll find a few instances of the User Timing API
 (window.performance), which will be console.log()ing frame rate data into the
@@ -426,32 +421,6 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  // function determineDx (elem, size) {
-  //   var oldWidth = elem.offsetWidth;
-  //   var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-  //   var oldSize = oldWidth / windowWidth;
-    // console.log(oldSize);
-
-    // Optional TODO: change to 3 sizes? no more xl?
-    // Changes the slider value to a percent width
-    // function sizeSwitcher (size) {
-    //   switch(size) {
-    //     case "1":
-    //       return 0.25;
-    //     case "2":
-    //       return 0.3333;
-    //     case "3":
-    //       return 0.5;
-    //     default:
-    //       console.log("bug in sizeSwitcher");
-    //   }
-    // }
-
-  //   var newSize = sizeSwitcher(size);
-  //   var dx = (newSize - oldSize) * windowWidth;
-  //
-  //   return dx;
-  // }
 
   // Iterates through pizza elements on the page and changes their widths
   // Use batch var randomPizza to avoid querry the document in for loop
@@ -460,8 +429,7 @@ var resizePizzas = function(size) {
     // console.log(randomPizza.length);
     // Checked the value of determineDx returned, it seems the whole function is useless, the final
     // result of of newwidth is the same value sizeSwitcher(size) output, just use it will be enough.
-    // in Sum, function determineDx is useless, just use the sizeSwitcher function will be enough.
-    // to be more efficient, move sizeSwitcher function into changePizzaSizes function.
+    // To be more efficient, move sizeSwitcher function into changePizzaSizes function.
     function sizeSwitcher (size) {
       switch(size) {
         case "1":
@@ -478,9 +446,6 @@ var resizePizzas = function(size) {
     var newSize = sizeSwitcher(size);
 
     for (var i = 0; i < randomPizza.length; i++) {
-      // var dx = determineDx(randomPizza[i], size);
-      // var newwidth = (randomPizza[i].offsetWidth + dx) + 'px';
-      // var newSize = sizeSwitcher(size);
       randomPizza[i].style.width = newSize + "%";
     }
   }
@@ -501,9 +466,7 @@ window.performance.mark("mark_start_generating"); // collect timing data
 // pizzasDiv is a constant value in following for loop, it would be more efficient out of for-loop
 // It significantly improved the initial painting.
 var pizzasDiv = document.getElementById("randomPizzas");
-
 for (var i = 2; i < 100; i++) {
-  // var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -534,13 +497,12 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-// -------------------
   // cache the document.body.scrollTop outside of for loop, it saves a lot of work.
   // in the loop, it will query document -- body -- scrollTop a lot of times.
   // last 10 frames time decreased from ~40 ms to ~1ms.
   var verticalDist = document.body.scrollTop;
   // querySelectorAll is selector with low efficiency comparing to DOM-querying
-  // It's because querySelectorAll search a wider range.
+  // It's because querySelectorAll search a much wider range of elements, while we just need a group of class
   // var items = document.querySelectorAll('.mover');
   var items = document.getElementsByClassName('mover');
   // Credit to Udacity mentor mcs: https://discussions.udacity.com/t/project-4-how-do-i-optimize-the-background-pizzas-for-loop/36302
@@ -551,58 +513,27 @@ function updatePositions() {
   var i;
   var constantArray = [];
   for (i=0; i < 5; i++){
-    // debugged, should be constantArray[i] instead of constantArray
     constantArray[i] = Math.sin((verticalDist / 1250) + (i % 5));
   }
 
   var cachedLength = items.length;
   for (i = 0; i < cachedLength; i++) {
     var phase = constantArray[i%5];
-    // console.log for checking the phase value
-    // console.log(phase);
-
-    var translateXDist = (i % cols) * s + 100 * phase - 1250;
-
-    // TODO try to find out why the 1250 hard code is necessary
-    // must be the difference b/w translateXDist and items[i].style.left
-    // console.log(translateXDist);
-    // console.log(items[i].basicLeft + 100 * phase);
-
+    // checked & compared the difference of items[i].style.left & items[i].style.transform
+    // even the same input value, the later would drift to the middile of the page
+    // the 1250 is hard coded.
 
     // by checking the value of item[i].basicLeft value, found they are the same value as mover adding function
     // DOM-querying is expensive, use math expression to replace.
     // to do so, we neee the s and cols value to be global available.
 
-    // console the value with math expression & basicLeft, make sure it can be replaced.
-    //  console.log(items[i].basicLeft);
-    //  console.log((i % cols) * s);
-    // console.log(typeof translateXDist);
-    // translateX doesn't work, why
-    // Figure it out, either translateX or translate3D will work.
+    // Credit to vascode https://github.com/vascode/FEND-P4-mobile-portfolio/blob/master/views/js/main.js
+
+    var translateXDist = (i % cols) * s + 100 * phase - 1250;
+    // either translateX or translate3d will work, and no noticed performance difference.
     items[i].style.transform = 'translateX(' + translateXDist + 'px)';
     // items[i].style.transform = 'translate3d(' + translateXDist + 'px, 0, 0)'
-    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-    // console.log(items[i].style.left);
    }
-// -------------------
-
-// Debug, credit to vascode https://github.com/vascode/FEND-P4-mobile-portfolio/blob/master/views/js/main.js
-  // var items = document.getElementsByClassName('mover');
-  // var top = document.body.scrollTop/ 1250;
-  // var numOfPizzas = items.length;
-  //
-  // var constArray = [];
-  // for (var i=0; i<5; i++){
-  //   constArray[i] = Math.sin(top + i) * 100; //correspond to 100 * phase in previoius code
-  // }
-  //
-  // for (var i = 0; i < numOfPizzas ; i++) {
-  //
-  //   var moveX =  items[i].basicLeft + constArray[(i % 5)] -1250;
-  //   // items[i].style.transform = 'translate3d(' + moveX + 'px, 0, 0)';
-  //   items[i].style.transform = 'translateX( ' + moveX + 'px)';
-  // }
-// -------------------
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -618,32 +549,26 @@ function updatePositions() {
 window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
+
 // For updatePositions work well, make the cols and s value global available.
 var cols = 8;
 var s = 256;
 
 document.addEventListener('DOMContentLoaded', function() {
+  // old position for cols & s value.
   // var cols = 8;
   // var s = 256;
 
   // It seems document.querySelector("#movingPizzas1") is a constant value
   // Not necessary to put it in the for-loop
   var movingPizzas = document.querySelector("#movingPizzas1");
-  // var i = 0;
-  // var basicLeft = [];
-  // for (i = 0; i < cols; i++) {
-  //   basicLeft[i] = (i % cols) * s;
-  // }
 
-  // var numberOfPizzaCol = Math.ceil(window.innerWidth / s);
+  // Depends on the window size, create the necessary background pizzas for animation
+  // TODO: hoa about users resize the window? Need event listner.
   var numberOfPizzaRow = Math.ceil(window.innerHeight / s);
-  // var numberOfPizzas = numberOfPizzaRow * numberOfPizzaCol;
-  // cols = numberOfPizzaCol;
   var numberOfPizzas = numberOfPizzaRow * cols;
-  // console.log(numberOfPizzaCol,numberOfPizzaRow,numberOfPizzas);
 
   for (i = 0; i < numberOfPizzas; i++) {
-  // for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -652,8 +577,6 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.basicLeft = (i % cols) * s;
     // elem.basicLeft = basicLeft[i%cols];
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    // console.log(elem.basicLeft,elem.style.top);
-    // document.querySelector("#movingPizzas1").appendChild(elem);
     movingPizzas.appendChild(elem);
   }
   updatePositions();
