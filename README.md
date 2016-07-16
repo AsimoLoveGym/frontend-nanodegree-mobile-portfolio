@@ -1,4 +1,40 @@
 ## Website Performance Optimization portfolio project
+###Optimized portfolio page
+[View my optimized page here](http://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio/)
+####PageSpeed optimizations:
+1. Use media query "print" for print.css
+2. Minified style.css and Inline it.
+3. Use grunt-responsive-images for oversized image pizzeria.jpg
+4. Compressed pizzeria.jpg and profilepic.jpg via Grunt grunt-contrib-imagemin.
+5. async all the js files.
+6. Relocated the google fonts link to the bottom.
+
+PageSpeed Insights score: Mobile: 95, Desktop: 97
+
+####JavaScript Optimization. (60 FPS):
+1. function changePizzaSizes(size):
+  - Use batch var randomPizza instead of quarrying the document in the loop (line: 428)
+  - removed determineDx, use sizeSwitcher (size) directly for changePizzaSizes function.
+2. 
+  - Use batch var pizzasDiv instead of quarrying the document in the loop (line: 468)
+3. function updatePositions():
+  - Use batch var verticalDist, items out of the loop (line: 503, 507)
+  - Use constantArray[i] for the repeated 5 values
+  - Use batch var cachedLength out of the loop (line: 519)
+  - Use transform: translateX instead of style.left for animation (line: 534)
+4. document.addEventListener('DOMContentLoaded', function()
+  - Use batch var movingPizzas out of the loop (line: 564)
+  - Instead of using constant 200 pizzas, use numberOfPizzaRow and numberOfPizzas to determine how much pizzas needed
+
+####Grunt NPM tasks used in this project:
+- grunt-responsive-images
+- grunt-contrib-imagemin
+- grunt-contrib-uglify
+- grunt-contrib-cssmin
+
+##Old ReadMe below
+
+## Website Performance Optimization portfolio project
 
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
 
