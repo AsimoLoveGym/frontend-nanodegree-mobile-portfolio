@@ -1,6 +1,7 @@
 ## Website Performance Optimization portfolio project
 ###Optimized portfolio page
 [View my optimized page here](http://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio/)
+[View the **before Optimized** page here](https://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio-Before_Optimization/)
 ####PageSpeed optimizations:
 1. Use media query "print" for print.css
 2. Minified style.css and Inline it.
@@ -9,11 +10,19 @@
 5. async all the js files.
 6. Relocated the google fonts link to the bottom.
 
+**After Optimization:**
 PageSpeed Insights score: 
   - **Mobile: 95**, 
   - **Desktop: 97**
 
 [Check my PageSpeed score here](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fasimolovegym.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F)
+
+**Before Optimization:**
+PageSpeed Insights score: 
+  - **Mobile: 27**, 
+  - **Desktop: 29**
+
+[Check the score before Optimation here](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fasimolovegym.github.io%2Ffrontend-nanodegree-mobile-portfolio-Before_Optimization%2F)
 
 ####JavaScript Optimization. (60 FPS):
 1. function changePizzaSizes(size):
@@ -29,6 +38,9 @@ PageSpeed Insights score:
 4. document.addEventListener('DOMContentLoaded', function()
   - Use batch var movingPizzas out of the loop (line: 564)
   - Instead of using constant 200 pizzas, use numberOfPizzaRow and numberOfPizzas to determine how much pizzas needed
+
+[After optimization](http://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio/views/pizza.html)
+[Before optimization](https://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio-Before_Optimization/views/pizza.html)
 
 ####Grunt NPM tasks used in this project:
 - grunt-responsive-images
