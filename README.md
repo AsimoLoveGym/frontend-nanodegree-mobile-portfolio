@@ -1,6 +1,7 @@
 ## Website Performance Optimization portfolio project
 ###Optimized portfolio page
 [View my optimized page here](http://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio/)
+
 [View the **before Optimized** page here](https://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio-Before_Optimization/)
 ####PageSpeed optimizations:
 1. Use media query "print" for print.css
@@ -40,6 +41,7 @@ PageSpeed Insights score:
   - Instead of using constant 200 pizzas, use numberOfPizzaRow and numberOfPizzas to determine how much pizzas needed
 
 [After optimization](http://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio/views/pizza.html)
+
 [Before optimization](https://asimolovegym.github.io/frontend-nanodegree-mobile-portfolio-Before_Optimization/views/pizza.html)
 
 ####Grunt NPM tasks used in this project:
